@@ -73,7 +73,7 @@ local function checkMats()
   local totalBlocks = sizeX * sizeY
   for slot = 1, 15 do
     totalBlocks = totalBlocks - turtle.getItemCount(slot)
-    if totalBlocks < 0 do
+    if totalBlocks < 0 then
       break
     end
   end
@@ -82,7 +82,7 @@ local function checkMats()
     return false    
   end
   local torches = totalBlocks / 5
-  if turtle.getItemCount(16) < torches do
+  if turtle.getItemCount(16) < torches then
     print("not enough torches, need "..torches)
     return false
   end
