@@ -7,8 +7,11 @@ local tArgs = { ... }
 local function placeTorch()
   if turtle.getItemCount(16) > 1 then
     turtle.up()
+    turtle.back()
     turtle.select(16)
     turtle.placeDown()
+    turtle.forward()
+    turtle.down()
     return true;
   else
     return false;
@@ -29,6 +32,31 @@ local function placeBlock()
   end
 end
 
-local function build
-  for x = 1, x < sizeX 
+local function buildRow( torchRow )
+  for x = 1, sizeX do
+    if not placeBlock() then
+      break
+    end
+    if torchRow then
+      if x%5 == 0 then
+        if not placeTorch() then
+          break;
+        end
+      end
+    end
+    turtle.forward()
+  end
 end
+
+local function build()
+  for y = 1, sizeY do
+    buildRow(y == 1 or y%5 == 0) 
+  end
+end
+
+--[[ Processing arguments ]]
+if tArgs[1] then sizeX = tArgs[1] end
+if tArgs[2] then sizeY = tArgs[2] else sizeY = sizeX end
+
+build()
+
