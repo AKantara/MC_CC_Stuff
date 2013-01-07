@@ -10,9 +10,12 @@ local function placeTorch()
     turtle.up()
     turtle.back()
     turtle.select(16)
-    turtle.placeDown()
+    if not turtle.placeDown() then
+      return fasle
+    end
     turtle.forward()
     turtle.down()
+    turtle.select(selectedItemSlot)
     return true;
   else
     return false;
@@ -21,6 +24,7 @@ end
 
 local function placeBlock()
   if turtle.getItemCount(selectedItemSlot) > 1 then
+    print("Found blocks in slot "..selectedItemSlot)
     turtle.placeDown()
     return true
   else
@@ -37,28 +41,50 @@ local function buildRow( torchRow )
   for x = 1, sizeX do
     print("block "..x)
     if not placeBlock() then
-      break
+      return false
     end
     if torchRow then
       if x % 5 == 0 then
         if not placeTorch() then
-          break;
+          return false
         end
       end
     end
     turtle.forward()
   end
+  return true
 end
 
 local function build()
   for y = 1, sizeY do
     print("Starting Row "..y)
     local torchRow = y == 1 or y % 5 == 0
-    buildRow(torchRow) 
+    if not buildRow(torchRow) then
+      break
+    end
     turtle.turnRight()
     turtle.forward()
     turtle.turnRight()
     turtle.forward()
+  end
+end
+
+local function checkMats()
+  local totalBlocks = sizeX x sizeY
+  for slot = 1, 15 do
+    totalBlocks = totalBlocks - turtle.getItemCount(slot)
+    if totalBlocks < 0 do
+      break
+    end
+  end
+  if totalBlocks > 0 do
+    print("not enough blocks, need "..totalBlocks)
+    return false    
+  end
+  local torches = totalBlocks / 5
+  if turtle.getItemCount(16) < torches do
+    print("not enough torches, need "..torches)
+    return false
   end
 end
 
@@ -66,5 +92,7 @@ end
 if tArgs[1] then sizeX = tArgs[1] end
 if tArgs[2] then sizeY = tArgs[2] else sizeY = sizeX end
 
-build()
+if checkMats() then
+  build()
+end
 
