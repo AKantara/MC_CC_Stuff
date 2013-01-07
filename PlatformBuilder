@@ -5,6 +5,7 @@ local selectedItemSlot = 1
 local tArgs = { ... }
 
 local function placeTorch()
+  print("Placing a torch");
   if turtle.getItemCount(16) > 1 then
     turtle.up()
     turtle.back()
@@ -34,6 +35,7 @@ end
 
 local function buildRow( torchRow )
   for x = 1, sizeX do
+    print("block "..x)
     if not placeBlock() then
       break
     end
@@ -50,8 +52,13 @@ end
 
 local function build()
   for y = 1, sizeY do
+    print("Starting Row "..y)
     local torchRow = y == 1 or y % 5 == 0
     buildRow(torchRow) 
+    turtle.turnRight()
+    turtle.forward()
+    turtle.turnRight()
+    turtle.forward()
   end
 end
 
