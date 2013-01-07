@@ -38,7 +38,7 @@ local function buildRow( torchRow )
       break
     end
     if torchRow then
-      if x%5 == 0 then
+      if x % 5 == 0 then
         if not placeTorch() then
           break;
         end
@@ -50,7 +50,8 @@ end
 
 local function build()
   for y = 1, sizeY do
-    buildRow(y == 1 or y%5 == 0) 
+    local torchRow = y == 1 or y % 5 == 0
+    buildRow(torchRow) 
   end
 end
 
